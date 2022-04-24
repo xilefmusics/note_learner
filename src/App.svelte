@@ -6,7 +6,7 @@
 
   import Settings from './Settings.svelte';
   let show_settings = false;
-  let is_bass = true;
+  let is_bass = false;
   const change_show_settings = () => {
     show_settings = !show_settings;
     update();
