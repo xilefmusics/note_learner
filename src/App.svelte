@@ -4,6 +4,15 @@
     update();
   })
 
+  import Settings from './Settings.svelte';
+  let show_settings = false;
+  let is_bass = true;
+  const change_show_settings = () => {
+    show_settings = !show_settings;
+    update();
+  }
+  const change_is_bass = () => is_bass = !is_bass;
+
   import Note from './Note.svelte';
   let noteComponent = null;
   const runs_per_round = 50;
@@ -19,6 +28,19 @@
     ["e/4", "b", "1", "Es"],
     ["f/4", null, "0", "F"],
     ["g/4", null, "1/2", "G"],
+    ["a/4", null, "2", "A"],
+    ["b/4", null, "0", "B"],
+  ];
+  const notes_bass = [
+    ["a/2", null, "2", "A"],
+    ["b/2", "b", "0", "B"],
+    ["c/3", null, "4 (1/3)", "C"],
+    ["d/3", null, "1/2", "D"],
+    ["e/3", "b", "1", "Es"],
+    ["f/3", null, "0", "F"],
+    ["g/3", null, "1/2", "G"],
+    ["a/3", null, "2", "A"],
+    ["b/3", "b", "0", "B"],
   ];
   let current_note =  null;
 
@@ -43,7 +65,7 @@
     const mode = shuffle(modes)[0][2];
     // generate options
     let options = [];
-    let tmp_notes = shuffle(notes);
+    let tmp_notes = shuffle(is_bass ? notes_bass: notes);
     for (let i=0 ; i<4 ; i++){
       options.push(tmp_notes.shift());
       if (mode === 2) {
@@ -113,29 +135,47 @@
     font-size: 4em;
   }
 
-  main {
+  .flex {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: stretch;
   }
+  #btn_settings {
+    text-align: center;
+    margin-right: 1em;
+  }
+
+  #btn_settings:hover {
+    background-color: #555555;
+  }
 </style>
 
-<main class="div-fill">
-  <p>Verbleibende Durchläufe: {runs}</p>
-  <p>Punkte: {score}</p>
-  <p>Richtig in Folge: {correct_in_row}</p>
-  <div id='note'>
-    <Note
-      bind:this={noteComponent}
+<main class="div-fill flex">
+  <div class='div-fill flex' style={show_settings && 'display: none'}>
+    <p id='btn_settings' on:click={change_show_settings}>Einstellungen</p>
+    <p>Verbleibende Durchläufe: {runs}</p>
+    <p>Punkte: {score}</p>
+    <p>Richtig in Folge: {correct_in_row}</p>
+    <div id='note'>
+      <Note
+        is_bass={is_bass}
+        bind:this={noteComponent}
+      />
+    </div>
+    <div id="buttons">
+      <button id='button1'>Answer 1</button>
+      <button id='button2'>Answer 2</button>
+      <button id='button3'>Answer 3</button>
+      <button id='button4'>Answer 4</button>
+    </div>
+  </div>
+  <div class='div-fill flex' style={!show_settings && 'display: none'}>
+    <Settings
+      change_show_settings={change_show_settings}
+      change_is_bass={change_is_bass}
+      is_bass={is_bass}
     />
   </div>
-  <div id="buttons">
-    <button id='button1'>Answer 1</button>
-    <button id='button2'>Answer 2</button>
-    <button id='button3'>Answer 3</button>
-    <button id='button4'>Answer 4</button>
-  </div>
 </main>
-
