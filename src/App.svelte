@@ -60,6 +60,8 @@
     return out;
   };
 
+  const remove_note = (notes, name) => notes.filter(note => note[2] !== name);
+
   const update = () => {
     // get mode
     const mode = shuffle(modes)[0][2];
@@ -67,18 +69,8 @@
     let options = [];
     let tmp_notes = shuffle(is_bass ? notes_bass: notes);
     for (let i=0 ; i<4 ; i++){
-      options.push(tmp_notes.shift());
-      if (mode === 2) {
-        tmp_notes = shuffle(tmp_notes.filter(note => {
-          let result = true;
-          options.forEach(option => {
-            if (option[2] === note[2]) {
-              result = false;
-            }
-          });
-          return result;
-        }));
-      }
+      options.push(tmp_notes[0]);
+      tmp_notes = remove_note(tmp_notes, tmp_notes[0][2]);
     }
     // set current_note
     current_note = options[0];

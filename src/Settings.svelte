@@ -41,7 +41,7 @@
 <div id='main'>
   <p on:click={change_show_settings}>Zurück</p>
   <div class='line'>
-    <input type="checkbox" value={is_bass} on:click={is_bass} />
+    <input type="checkbox" value={is_bass} on:click={change_is_bass} />
     <label>Bassschlüssel</label>
   </div>
 </div>
