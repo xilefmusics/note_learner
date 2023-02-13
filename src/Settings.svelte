@@ -2,6 +2,8 @@
   export let change_show_settings;
   export let change_is_bass;
   export let is_bass;
+  export let mode;
+  export let change_mode;
 
 </script>
 
@@ -43,5 +45,8 @@
   <div class='line'>
     <input type="checkbox" value={is_bass} on:click={change_is_bass} />
     <label>Bassschlüssel</label>
+  </div>
+  <div class='line'>
+    <button on:click={change_mode}>{mode}</button>
   </div>
 </div>

@@ -12,6 +12,16 @@
     update();
   }
   const change_is_bass = () => is_bass = !is_bass;
+  let mode = "Noten und Griffe"
+  const change_mode = () => {
+    if (mode === "Noten und Griffe") {
+      mode = "Noten"
+    } else if (mode === "Noten") {
+      mode = "Griffe"
+    } else {
+      mode = "Noten und Griffe"
+    }
+  }
 
   import Note from './Note.svelte';
   let noteComponent = null;
@@ -91,7 +101,14 @@
 
   const update = () => {
     // get mode
-    const mode = shuffle(modes)[0][2];
+    let m = -1
+    if (mode === "Griffe") {
+      m = modes[1][2]
+    } else if (mode === "Noten") {
+      m = modes[0][2]
+    } else {
+      m = shuffle(modes)[0][2];
+    }
     // generate options
     let options = [];
     let tmp_notes = shuffle(is_bass ? notes_bass: notes);
@@ -104,10 +121,10 @@
     noteComponent.setNote(current_note[0], current_note[1]);
     // set options
     options = shuffle(options);
-    document.getElementById('button1').innerHTML = options[0][mode];
-    document.getElementById('button2').innerHTML = options[1][mode];
-    document.getElementById('button3').innerHTML = options[2][mode];
-    document.getElementById('button4').innerHTML = options[3][mode];
+    document.getElementById('button1').innerHTML = options[0][m];
+    document.getElementById('button2').innerHTML = options[1][m];
+    document.getElementById('button3').innerHTML = options[2][m];
+    document.getElementById('button4').innerHTML = options[3][m];
     document.getElementById('button1').onclick = () => evaluate(options[0]);
     document.getElementById('button2').onclick = () => evaluate(options[1]);
     document.getElementById('button3').onclick = () => evaluate(options[2]);
@@ -195,6 +212,8 @@
       change_show_settings={change_show_settings}
       change_is_bass={change_is_bass}
       is_bass={is_bass}
+      mode={mode}
+      change_mode={change_mode}
     />
   </div>
 </main>
